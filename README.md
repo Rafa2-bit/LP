@@ -11,13 +11,16 @@ Desenvolver um sistema em Java com interface gráfica e persistência dos dados 
 arquivo texto, utilizando programação orientada a objetos.
 
 Funcionalidades do Sistema: 
+
 Curso: 
 - Cadastrar, editar, excluir, desabilitar, reabilitar e consultar cursos.
 - Listar alunos de um curso.
 - Listar todos os cursos.
 - Controlar limite de alunos.
+  
 Aluno: 
 - Cadastrar, editar, excluir, desabilitar, reabilitar e consultar alunos.
+  
 Relatórios e Listagens: 
 - Listar todos os alunos de um curso específico.
 - Listar todos os cursos existentes e seus respectivos alunos.
