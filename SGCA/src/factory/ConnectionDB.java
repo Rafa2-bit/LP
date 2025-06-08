@@ -14,10 +14,10 @@ public class ConnectionDB {
         
         public Connection getConnection(){
             try{
-                return DriverManager.getConnection("jdbc:mysql://localhost/SGCA","root","fatec");
+                return DriverManager.getConnection("jdbc:mysql://localhost/sgca","root","fatec");
             }
-            catch(SQLException excecao){
-                throw new RuntimeException(excecao);
+            catch(SQLException e){
+                throw new RuntimeException(e);
             }
         }
 }

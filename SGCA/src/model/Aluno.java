@@ -1,7 +1,7 @@
 
 package model;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -12,8 +12,7 @@ public class Aluno {
     private String nome,cpf,email;
     private Date datanasc;
     
-    public Aluno(int idAluno,String nome,String cpf,int telefone,String email,Date datanasc){
-        this.idAluno = idAluno;
+    public Aluno(String nome,String cpf,int telefone,String email,Date datanasc){
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;
