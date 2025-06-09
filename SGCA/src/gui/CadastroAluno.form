@@ -23,7 +23,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jLabel1" max="32767" attributes="0"/>
+          <Component id="jLabel1" pref="694" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel1" max="32767" attributes="0"/>
@@ -103,9 +103,18 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="48" max="32767" attributes="0"/>
-                  <Component id="voltar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="voltar" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                          <Component id="lista" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -142,6 +151,7 @@
                       <Component id="cadastrar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="editar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="reabilitar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lista" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -231,6 +241,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Excluir"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="excluirActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="reabilitar">
           <Properties>
@@ -248,6 +261,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="limparActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="lista">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Lista de alunos"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="listaActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

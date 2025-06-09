@@ -13,16 +13,17 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.Aluno;
 
 /**
  *
  * @author faelb
  */
-public class Cadastro extends javax.swing.JFrame {
+public class CadastroAluno extends javax.swing.JFrame {
     private Connection conn;
     
-    public Cadastro() {
+    public CadastroAluno() {
         initComponents();
         this.conn = new ConnectionDB().getConnection();
     }
@@ -66,6 +67,7 @@ public class Cadastro extends javax.swing.JFrame {
         reabilitar = new javax.swing.JButton();
         desabilitar = new javax.swing.JButton();
         limpar = new javax.swing.JButton();
+        lista = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -132,6 +134,11 @@ public class Cadastro extends javax.swing.JFrame {
         editar.setText("Editar");
 
         excluir.setText("Excluir");
+        excluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirActionPerformed(evt);
+            }
+        });
 
         reabilitar.setText("Reabilitar");
 
@@ -141,6 +148,13 @@ public class Cadastro extends javax.swing.JFrame {
         limpar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 limparActionPerformed(evt);
+            }
+        });
+
+        lista.setText("Lista de alunos");
+        lista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listaActionPerformed(evt);
             }
         });
 
@@ -177,9 +191,15 @@ public class Cadastro extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(reabilitar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(desabilitar, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addComponent(voltar)
-                .addGap(106, 106, 106))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(voltar)
+                        .addGap(106, 106, 106))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(lista)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,7 +228,8 @@ public class Cadastro extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cadastrar)
                     .addComponent(editar)
-                    .addComponent(reabilitar))
+                    .addComponent(reabilitar)
+                    .addComponent(lista))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(excluir)
@@ -222,7 +243,7 @@ public class Cadastro extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -265,18 +286,16 @@ public class Cadastro extends javax.swing.JFrame {
     }//GEN-LAST:event_voltarActionPerformed
 
     private void cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarActionPerformed
-        
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dataConvertida = LocalDate.parse(datanasc.getText(), formatter);
         Date data = Date.valueOf(dataConvertida);
         
-        int tel = Integer.parseInt(telefone.getText());
         
-        Aluno aluno = new Aluno(nome.getText(),cpf.getText(),tel,email.getText(),data);
+        Aluno aluno = new Aluno(nome.getText(),cpf.getText(),telefone.getText(),email.getText(),data);
         
         AlunoDAO dao = new AlunoDAO();
         try {
-            dao.insertDB(nome.getText(),cpf.getText(),tel,email.getText(), data);
+            dao.insertDB(nome.getText(),cpf.getText(),telefone.getText(),email.getText(), data);
             System.out.println("cadastrado com sucesso");
         } catch (SQLException e) {
             Logger.getLogger("Erro no cadastro:"+e);
@@ -289,8 +308,32 @@ public class Cadastro extends javax.swing.JFrame {
         telefone.setText("");
         email.setText("");
         datanasc.setText("");
-        
     }//GEN-LAST:event_limparActionPerformed
+
+    private void excluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirActionPerformed
+        String n = JOptionPane.showInputDialog("Digite o ID do Aluno");
+        
+        int id = Integer.parseInt(n);
+        
+        AlunoDAO dao = new AlunoDAO();
+        try {
+            dao.DeleteAluno(id);
+            JOptionPane.showMessageDialog(rootPane, "Aluno deletado com sucesso");
+        } catch (SQLException e) {
+            Logger.getLogger("Erro ao Deletar:"+e);
+        }
+        
+    }//GEN-LAST:event_excluirActionPerformed
+
+    private void listaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listaActionPerformed
+        try {
+            TabelaAlunos acao = new TabelaAlunos();
+            acao.listar();
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroAluno.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_listaActionPerformed
 
     
     /**
@@ -310,20 +353,21 @@ public class Cadastro extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Cadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Cadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Cadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Cadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Cadastro().setVisible(true);
+                new CadastroAluno().setVisible(true);
             }
         });
     }
@@ -344,6 +388,7 @@ public class Cadastro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton limpar;
+    private javax.swing.JButton lista;
     private javax.swing.JTextField nome;
     private javax.swing.JButton reabilitar;
     private javax.swing.JTextField telefone;

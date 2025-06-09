@@ -8,11 +8,11 @@ import java.sql.Date;
  * @author faelb
  */
 public class Aluno {
-    private int idAluno,telefone;
-    private String nome,cpf,email;
+    private int idAluno;
+    private String nome,cpf,email,telefone;
     private Date datanasc;
     
-    public Aluno(String nome,String cpf,int telefone,String email,Date datanasc){
+    public Aluno(String nome,String cpf,String telefone,String email,Date datanasc){
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;
@@ -24,7 +24,7 @@ public class Aluno {
         return idAluno;
     }
 
-    public int getTelefone() {
+    public String getTelefone() {
         return telefone;
     }
 
@@ -48,7 +48,7 @@ public class Aluno {
         this.idAluno = idAluno;
     }
 
-    public void setTelefone(int telefone) {
+    public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
 

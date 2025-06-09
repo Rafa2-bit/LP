@@ -9,6 +9,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import model.Aluno;
 /**
  *
  * @author faelb
@@ -20,15 +25,16 @@ public class AlunoDAO {
         this.conn = new ConnectionDB().getConnection();
     }
     
-    public void insertDB(String nome,String cpf,int telefone,String email,Date datanasc)throws SQLException{
+    public void insertDB(String nome,String cpf,String telefone,String email,Date datanasc)throws SQLException{
         String sql = "INSERT INTO aluno(nome, cpf, telefone, email, datanasc) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement stm = conn.prepareStatement(sql);
       
-        stm.setString(2, nome);
-        stm.setString(3, cpf);
-        stm.setInt(4, telefone);
-        stm.setString(5, email);
-        stm.setDate(6, (java.sql.Date)datanasc);
+        stm.setString(1, nome);
+        stm.setString(2, cpf);
+        stm.setString(3, telefone);
+        stm.setString(4, email);
+        stm.setDate(5, (java.sql.Date)datanasc);
+        stm.executeUpdate();
         
         stm.close();
     }
@@ -57,7 +63,7 @@ public class AlunoDAO {
     }
      
      
-    public void atualizar(int idAluno,String nome,String cpf,int telefone,String email,Date datanasc) throws SQLException {
+    public void atualizar(int idAluno,String nome,String cpf,String telefone,String email,Date datanasc) throws SQLException {
         String sql = "UPDATE aluno SET nome=?, cpf=?, telefone=?, email=?, datanasc=? WHERE idAluno=?";
         PreparedStatement stmt = conn.prepareStatement(sql);
         cpf = cpf.replaceAll("[^0-9]", "");
@@ -65,7 +71,7 @@ public class AlunoDAO {
         try {
             stmt.setString(1, nome);
             stmt.setString(2, cpf);
-            stmt.setInt(3, telefone);
+            stmt.setString(3, telefone);
             stmt.setString(4, email);
             stmt.setDate(5, (java.sql.Date) datanasc);
             stmt.setInt(6, idAluno);
@@ -106,6 +112,26 @@ public class AlunoDAO {
         }
     }
     
-    
+     public List<Aluno> listar() throws SQLException{
+         
+           List<Aluno> alunos = new ArrayList<>();
+           String sql = "select * from aluno";
+           try(Connection con = new ConnectionDB().getConnection(); Statement stm = con.createStatement(); ResultSet rs = stm.executeQuery(sql)){
+               while(rs.next()){
+                   
+                   Aluno aluno = new Aluno(
+                           rs.getString("nome"),
+                           rs.getString("cpf"),
+                           rs.getString("telefone"),
+                           rs.getString("email"),
+                           rs.getDate("datanasc")
+                   );
+                  
+                   alunos.add(aluno);
+               }
+           }   
+        return alunos;
+           
+       }
     
 }

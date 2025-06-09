@@ -19,15 +19,16 @@ public class CursoDAO {
     }
     
     
-        public void insertDB(int idCurso,String nome , int cargaHoraria, int limiteAlunos, int ativos)throws SQLException{
-        String sql = "INSERT INTO curso(idCurso, nome, cargaHoraria, limiteAlunos, ativos) VALUES (?, ?, ?, ?, ?)";
+        public void insertDB(String nome , int cargaHoraria, int limiteAlunos, int ativos)throws SQLException{
+        String sql = "INSERT INTO curso(nome, cargaHoraria, limiteAlunos, ativos) VALUES (?, ?, ?, ?)";
         PreparedStatement stm = conn.prepareStatement(sql);
         
-        stm.setInt(1, idCurso);
-        stm.setString(2, nome);
-        stm.setInt(3, cargaHoraria);
-        stm.setInt(4, limiteAlunos);
-        stm.setInt(5, ativos);
+        
+        stm.setString(1, nome);
+        stm.setInt(2, cargaHoraria);
+        stm.setInt(3, limiteAlunos);
+        stm.setInt(4, ativos);
+        stm.executeUpdate();
         
         stm.close();
         }
