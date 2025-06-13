@@ -4,6 +4,7 @@
  */
 package gui;
 
+import model.Aluno;
 import dao.AlunoDAO;
 import factory.ConnectionDB;
 import java.sql.Connection;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -68,6 +70,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         desabilitar = new javax.swing.JButton();
         limpar = new javax.swing.JButton();
         lista = new javax.swing.JButton();
+        Atualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -132,6 +135,11 @@ public class CadastroAluno extends javax.swing.JFrame {
         });
 
         editar.setText("Editar");
+        editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarActionPerformed(evt);
+            }
+        });
 
         excluir.setText("Excluir");
         excluir.addActionListener(new java.awt.event.ActionListener() {
@@ -158,6 +166,13 @@ public class CadastroAluno extends javax.swing.JFrame {
             }
         });
 
+        Atualizar.setText("Atualizar");
+        Atualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AtualizarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -165,12 +180,12 @@ public class CadastroAluno extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(86, 86, 86)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel6)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Atualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cadastrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(excluir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,7 +208,7 @@ public class CadastroAluno extends javax.swing.JFrame {
                             .addComponent(desabilitar, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                         .addComponent(voltar)
                         .addGap(106, 106, 106))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -236,7 +251,9 @@ public class CadastroAluno extends javax.swing.JFrame {
                     .addComponent(desabilitar)
                     .addComponent(voltar)
                     .addComponent(limpar))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Atualizar)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -335,6 +352,52 @@ public class CadastroAluno extends javax.swing.JFrame {
         
     }//GEN-LAST:event_listaActionPerformed
 
+    private void editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarActionPerformed
+        AlunoDAO aluno = new AlunoDAO();
+        String n = JOptionPane.showInputDialog("Digite o ID do aluno:");
+        int id = Integer.parseInt(n);
+       
+        try {
+           List<Aluno> alunos = aluno.Editar(id);
+           for (Aluno c : alunos) {
+    
+                Object[] dados = {
+                c.getNome(),
+                c.getCpf(),
+                c.getTelefone(),
+                c.getEmail(),
+                c.getDatanasc()
+                };
+                nome.setText((String) dados[0]);
+                cpf.setText((String) dados[1]);
+                telefone.setText((String) dados[2]);
+                email.setText((String) dados[3]);
+                datanasc.setText(dados[4].toString());
+            }
+        
+           
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroAluno.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_editarActionPerformed
+
+    private void AtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtualizarActionPerformed
+       AlunoDAO aluno = new AlunoDAO();
+       String n = JOptionPane.showInputDialog("Confirme o ID do aluno");
+       int id = Integer.parseInt(n);
+       
+       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataConvertida = LocalDate.parse(datanasc.getText(), formatter);
+        Date data = Date.valueOf(dataConvertida);
+        
+        try {
+            aluno.atualizar(id, nome.getText(), cpf.getText(), telefone.getText(), email.getText(), data);
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroAluno.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_AtualizarActionPerformed
+
     
     /**
      * @param args the command line arguments
@@ -373,6 +436,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Atualizar;
     private javax.swing.JButton cadastrar;
     private javax.swing.JTextField cpf;
     private javax.swing.JTextField datanasc;

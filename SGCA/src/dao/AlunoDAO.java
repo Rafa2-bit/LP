@@ -26,6 +26,7 @@ public class AlunoDAO {
     }
     
     public void insertDB(String nome,String cpf,String telefone,String email,Date datanasc)throws SQLException{
+        
         String sql = "INSERT INTO aluno(nome, cpf, telefone, email, datanasc) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement stm = conn.prepareStatement(sql);
       
@@ -39,7 +40,7 @@ public class AlunoDAO {
         stm.close();
     }
     
-     public void DeleteAluno(int idAluno)throws SQLException{
+    public void DeleteAluno(int idAluno)throws SQLException{
         
         String del = "DELETE FROM aluno WHERE idAluno = ?";   
         PreparedStatement stm = conn.prepareStatement(del);
@@ -64,6 +65,7 @@ public class AlunoDAO {
      
      
     public void atualizar(int idAluno,String nome,String cpf,String telefone,String email,Date datanasc) throws SQLException {
+        
         String sql = "UPDATE aluno SET nome=?, cpf=?, telefone=?, email=?, datanasc=? WHERE idAluno=?";
         PreparedStatement stmt = conn.prepareStatement(sql);
         cpf = cpf.replaceAll("[^0-9]", "");
@@ -88,35 +90,38 @@ public class AlunoDAO {
     
     
     public void desativarAluno(int idAluno)throws SQLException{
-        String sql = "UPDATE ativo = FALSE WHERE idAluno = ?";
-            PreparedStatement stm = conn.prepareStatement(sql);
-            
-            try{
-                stm.setInt(1, idAluno);
-            }
-            catch(Exception e){
-                System.out.println("Erro ao desativar curso:"+e);
-            }
-    }
-        
-    
-    public void ativarAluno(int idCurso)throws SQLException{
-        String sql = "UPDATE ativo = TRUE WHERE idAluno = ?";
+        String sql = "UPDATE aluno SET ativo = FALSE WHERE idAluno = ?";
         PreparedStatement stm = conn.prepareStatement(sql);
             
         try{
-            stm.setInt(1, idCurso);
+            stm.setInt(1, idAluno);
+            
+            stm.executeUpdate();
+        }
+        catch(Exception e){
+            System.out.println("Erro ao desativar curso:"+e);
+        }
+    }
+        
+    
+    public void ativarAluno(int idAluno)throws SQLException{
+        String sql = "UPDATE aluno SET ativo = TRUE WHERE idAluno = ?";
+        PreparedStatement stm = conn.prepareStatement(sql);
+            
+        try{
+            stm.setInt(1, idAluno);
+            
+            stm.executeUpdate();
         }
         catch(Exception e){
             System.out.println("Erro ao ativar curso:"+e);
         }
     }
     
-     public List<Aluno> listar() throws SQLException{
-         
-           List<Aluno> alunos = new ArrayList<>();
-           String sql = "select * from aluno";
-           try(Connection con = new ConnectionDB().getConnection(); Statement stm = con.createStatement(); ResultSet rs = stm.executeQuery(sql)){
+    public List<Aluno> listar() throws SQLException{ 
+        List<Aluno> alunos = new ArrayList<>();
+        String sql = "select * from aluno";
+        try(Connection con = new ConnectionDB().getConnection(); Statement stm = con.createStatement(); ResultSet rs = stm.executeQuery(sql)){
                while(rs.next()){
                    
                    Aluno aluno = new Aluno(
@@ -131,7 +136,33 @@ public class AlunoDAO {
                }
            }   
         return alunos;
-           
-       }
+    }
     
+  
+    public List<Aluno> Editar(int idAluno) throws SQLException {  
+    List<Aluno> alunos = new ArrayList<>();
+    String sql = "SELECT * FROM aluno WHERE idAluno=?";
+    
+    try (PreparedStatement stm = conn.prepareStatement(sql)) {
+        stm.setInt(1, idAluno);
+        ResultSet rs = stm.executeQuery();
+        
+        while (rs.next()) {
+            Aluno aluno = new Aluno(
+                rs.getString("nome"),
+                rs.getString("cpf"),
+                rs.getString("telefone"),
+                rs.getString("email"),
+                rs.getDate("datanasc")
+            );
+            alunos.add(aluno);
+        }
+        
+    } catch (Exception e) {
+        System.out.println("Erro ao buscar dados do aluno: " + e.getMessage());
+    }
+
+    return alunos;
+    }
+
 }

@@ -13,13 +13,12 @@ public class Curso {
     private ArrayList<String> listaAlunos;
     
     
-    public Curso(int idCurso,String nome , int cargaHoraria, int limiteAlunos, int ativos, ArrayList<String> listaAlunos) {
+    public Curso(int idCurso,String nome , int cargaHoraria, int limiteAlunos, int ativos) {
         this.nome = nome;
         this.idCurso = idCurso;
         this.cargaHoraria = cargaHoraria;
         this.limiteAlunos = limiteAlunos;
         this.ativos = ativos;
-        this.listaAlunos = listaAlunos;
     }
     
 

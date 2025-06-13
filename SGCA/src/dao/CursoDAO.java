@@ -19,15 +19,15 @@ public class CursoDAO {
     }
     
     
-        public void insertDB(String nome , int cargaHoraria, int limiteAlunos, int ativos)throws SQLException{
-        String sql = "INSERT INTO curso(nome, cargaHoraria, limiteAlunos, ativos) VALUES (?, ?, ?, ?)";
+        public void insertDB(int idCurso,String nome , int cargaHoraria, int limiteAlunos, int ativos)throws SQLException{
+        String sql = "INSERT INTO curso(idCurso,nome, cargaHoraria, limiteAlunos, ativo) VALUES (?,?, ?, ?, ?)";
         PreparedStatement stm = conn.prepareStatement(sql);
         
-        
-        stm.setString(1, nome);
-        stm.setInt(2, cargaHoraria);
-        stm.setInt(3, limiteAlunos);
-        stm.setInt(4, ativos);
+        stm.setInt(1, idCurso);
+        stm.setString(2, nome);
+        stm.setInt(3, cargaHoraria);
+        stm.setInt(4, limiteAlunos);
+        stm.setInt(5, ativos);
         stm.executeUpdate();
         
         stm.close();
@@ -81,11 +81,13 @@ public class CursoDAO {
         
         
         public void desativarCurso(int idCurso)throws SQLException{
-            String sql = "UPDATE ativo = FALSE WHERE idCurso = ?";
+            String sql = "UPDATE curso SET ativo = FALSE WHERE idCurso = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             
             try{
                 stm.setInt(1, idCurso);
+                
+                stm.executeUpdate();
             }catch(Exception e){
                 System.out.println("Erro ao desativar curso:"+e);
             }
@@ -93,11 +95,13 @@ public class CursoDAO {
         
         
         public void ativarCurso(int idCurso)throws SQLException{
-            String sql = "UPDATE ativo = TRUE WHERE idCurso = ?";
+            String sql = "UPDATE curso SET ativo = TRUE WHERE idCurso = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             
             try{
                 stm.setInt(1, idCurso);
+                
+                stm.executeUpdate();
             }catch(Exception e){
                 System.out.println("Erro ao ativar curso:"+e);
             }
