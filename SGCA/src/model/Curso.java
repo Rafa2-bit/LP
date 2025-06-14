@@ -9,16 +9,17 @@ import java.util.ArrayList;
  */
 public class Curso {
     private String nome;
-    private int idCurso,cargaHoraria,limiteAlunos,ativos;
+    private int idCurso,cargaHoraria,limiteAlunos,ativo;
     private ArrayList<String> listaAlunos;
     
     
-    public Curso(int idCurso,String nome , int cargaHoraria, int limiteAlunos, int ativos) {
+    
+    public Curso(int idCurso,String nome , int cargaHoraria, int limiteAlunos, int ativo) {
         this.nome = nome;
         this.idCurso = idCurso;
         this.cargaHoraria = cargaHoraria;
         this.limiteAlunos = limiteAlunos;
-        this.ativos = ativos;
+        this.ativo = ativo;
     }
     
 
@@ -36,10 +37,6 @@ public class Curso {
 
     public int getLimiteAlunos() {
         return limiteAlunos;
-    }
-
-    public int getAtivos() {
-        return ativos;
     }
 
     public ArrayList<String> getListaAlunos() {
@@ -62,12 +59,16 @@ public class Curso {
         this.limiteAlunos = limiteAlunos;
     }
 
-    public void setAtivos(int ativos) {
-        this.ativos = ativos;
-    }
-
     public void setListaAlunos(ArrayList<String> listaAlunos) {
         this.listaAlunos = listaAlunos;
+    }
+
+    public int getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(int ativo) {
+        this.ativo = ativo;
     }
     
     

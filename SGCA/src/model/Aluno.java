@@ -8,16 +8,18 @@ import java.sql.Date;
  * @author faelb
  */
 public class Aluno {
-    private int idAluno;
+    private int idAluno,ativo;
     private String nome,cpf,email,telefone;
     private Date datanasc;
     
-    public Aluno(String nome,String cpf,String telefone,String email,Date datanasc){
+    public Aluno(String nome,String cpf,String telefone,String email,Date datanasc,int ativo){
+        this.idAluno = idAluno;
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;
         this.email = email;
         this.datanasc = datanasc;
+        this.ativo = ativo;
     }
 
     public int getIdAluno() {
@@ -67,6 +69,15 @@ public class Aluno {
     public void setDatanasc(Date datanasc) {
         this.datanasc = datanasc;
     }
+
+    public int getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(int ativo) {
+        this.ativo = ativo;
+    }
+    
     
     
 }

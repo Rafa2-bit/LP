@@ -1,6 +1,8 @@
 
 package factory;
 
+import gui.CadastroAluno;
+import gui.CadastroCurso;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -14,6 +16,11 @@ public class Conexao {
        Connection connection = new ConnectionDB().getConnection();
         System.out.println("Conexão aberta");
         connection.close();
-    }
     
-}
+     java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new CadastroAluno().setVisible(true);
+            }
+        });
+    
+}}

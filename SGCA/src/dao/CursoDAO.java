@@ -4,8 +4,14 @@ package dao;
 import factory.ConnectionDB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import model.Aluno;
+import model.Curso;
 
 /**
  *
@@ -53,12 +59,12 @@ public class CursoDAO {
         }
        
         stm.close();
-        conn.close();
+        conn.close(); 
         }
         
         
-        public void editarCurso(int idCurso,String nome , int cargaHoraria, int limiteAlunos, int ativos) throws SQLException {
-        String sql = "UPDATE curso SET nome=?, cargaHoraria=?, limiteAlunos=?,limiteAlunos=? WHERE idCurso=?";
+        public void editarCurso(int idCurso,String nome , int cargaHoraria, int limiteAlunos) throws SQLException {
+        String sql = "UPDATE curso SET nome=?, cargaHoraria=?, limiteAlunos=? WHERE idCurso=?";
         PreparedStatement stm = conn.prepareStatement(sql);
         
         
@@ -66,8 +72,7 @@ public class CursoDAO {
             stm.setString(1, nome);
             stm.setInt(2, cargaHoraria);
             stm.setInt(3, limiteAlunos);
-            stm.setInt(4, ativos);
-            stm.setInt(5, idCurso);
+            stm.setInt(4, idCurso);
         
             stm.executeUpdate();
         
@@ -107,6 +112,68 @@ public class CursoDAO {
             }
         }
          
+        public List<Curso> Editar(int idCurso) throws SQLException {  
+            List<Curso> cursos = new ArrayList<>();
+            String sql = "SELECT * FROM curso WHERE idCurso=?";
+    
+            try (PreparedStatement stm = conn.prepareStatement(sql)) {
+                stm.setInt(1, idCurso);
+                ResultSet rs = stm.executeQuery();
+        
+            while (rs.next()) {
+            Curso curso = new Curso(
+                rs.getInt("idCurso"),
+                rs.getString("nome"),
+                rs.getInt("cargaHoraria"),
+                rs.getInt("limiteAlunos"),1
+            );
+            cursos.add(curso);
+            }
+        
+            } catch (Exception e) {
+                System.out.println("Erro ao buscar dados do aluno: " + e.getMessage());
+            }
+
+            return cursos;
+        }
+
+        
+        public List<Curso> listar() throws SQLException{ 
+        List<Curso> cursos = new ArrayList<>();
+        String sql = "select * from curso";
+        try(Statement stm = conn.createStatement(); ResultSet rs = stm.executeQuery(sql)){
+               while(rs.next()){
+                   
+                   Curso curso = new Curso(
+                           rs.getInt("idCurso"),
+                           rs.getString("nome"),
+                           rs.getInt("cargaHoraria"),
+                           rs.getInt("limiteAlunos"),
+                           rs.getInt("ativo")
+                   );
+                  
+                   cursos.add(curso);
+               }
+           }   
+        return cursos;
+    }
+        
+        public int pegarIDcurso(String nome) throws SQLException {
+            String sql = "SELECT idCurso FROM curso WHERE nome = ?";
+            int id = 0;
+            try (PreparedStatement stm = conn.prepareStatement(sql)) {
+                stm.setString(1, nome);
+                ResultSet rs = stm.executeQuery();
+
+                    if (rs.next()) {
+            id = rs.getInt("idCurso");
+                }
+            }
+            return id;
+        }
+
+     
         
         
+      
 }

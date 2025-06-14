@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import model.Aluno;
 /**
  *
@@ -25,17 +26,22 @@ public class AlunoDAO {
         this.conn = new ConnectionDB().getConnection();
     }
     
-    public void insertDB(String nome,String cpf,String telefone,String email,Date datanasc)throws SQLException{
-        
-        String sql = "INSERT INTO aluno(nome, cpf, telefone, email, datanasc) VALUES (?, ?, ?, ?, ?)";
+    public void insertDB(String nome,String cpf,String telefone,String email,Date datanasc,int curso)throws SQLException{
+        String sql = "INSERT INTO aluno(nome, cpf, telefone, email, datanasc, curso) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement stm = conn.prepareStatement(sql);
-      
+      try{
         stm.setString(1, nome);
         stm.setString(2, cpf);
         stm.setString(3, telefone);
         stm.setString(4, email);
         stm.setDate(5, (java.sql.Date)datanasc);
+        stm.setInt(6, curso);
+    
         stm.executeUpdate();
+ 
+      }catch(Exception e){
+       e.printStackTrace(); 
+        JOptionPane.showMessageDialog(null, "Erro no cadastro: " + e.getMessage());}
         
         stm.close();
     }
@@ -64,9 +70,9 @@ public class AlunoDAO {
     }
      
      
-    public void atualizar(int idAluno,String nome,String cpf,String telefone,String email,Date datanasc) throws SQLException {
+    public void atualizar(int idAluno,String nome,String cpf,String telefone,String email,Date datanasc, int curso) throws SQLException {
         
-        String sql = "UPDATE aluno SET nome=?, cpf=?, telefone=?, email=?, datanasc=? WHERE idAluno=?";
+        String sql = "UPDATE aluno SET nome=?, cpf=?, telefone=?, email=?, datanasc=?, curso = ? WHERE idAluno=?";
         PreparedStatement stmt = conn.prepareStatement(sql);
         cpf = cpf.replaceAll("[^0-9]", "");
         
@@ -76,7 +82,8 @@ public class AlunoDAO {
             stmt.setString(3, telefone);
             stmt.setString(4, email);
             stmt.setDate(5, (java.sql.Date) datanasc);
-            stmt.setInt(6, idAluno);
+            stmt.setInt(6, curso);
+            stmt.setInt(7, idAluno);
         
             stmt.executeUpdate();
         
@@ -129,12 +136,14 @@ public class AlunoDAO {
                            rs.getString("cpf"),
                            rs.getString("telefone"),
                            rs.getString("email"),
-                           rs.getDate("datanasc")
+                           rs.getDate("datanasc"),
+                           rs.getInt("ativo")
                    );
                   
                    alunos.add(aluno);
                }
-           }   
+           }
+        
         return alunos;
     }
     
@@ -153,7 +162,8 @@ public class AlunoDAO {
                 rs.getString("cpf"),
                 rs.getString("telefone"),
                 rs.getString("email"),
-                rs.getDate("datanasc")
+                rs.getDate("datanasc"),
+                rs.getInt("ativo")
             );
             alunos.add(aluno);
         }
@@ -164,5 +174,58 @@ public class AlunoDAO {
 
     return alunos;
     }
+    
+    public int pegarID(String nome)throws SQLException{
+        String sql = "Select idAluno from aluno where nome = ?";
+        int id = 0;
+        try (PreparedStatement stm = conn.prepareStatement(sql)) {
+            stm.setString(1,nome);
+            ResultSet rs = stm.executeQuery();
+            
+            while (rs.next()) {
+                 id = rs.getInt("idAluno");
+            }
+        }
+       return id;
+    }
+    
+    public int pegarIDcurso(String nomeAluno) throws SQLException {
+    String sql = "SELECT curso FROM aluno WHERE nome = ?";
+    int id = 0;
+    try (PreparedStatement stm = conn.prepareStatement(sql)) {
+        stm.setString(1, nomeAluno);
+        ResultSet rs = stm.executeQuery();
 
+        if (rs.next()) {
+            id = rs.getInt("curso");
+        }
+    }
+    return id;
+    }
+
+    
+    public List<Aluno> listarAlunosCurso(int idCurso) throws SQLException {
+        List<Aluno> alunos = new ArrayList<>();
+        String sql = "SELECT * FROM aluno WHERE curso = ?";
+        try (PreparedStatement stm = conn.prepareStatement(sql)) {
+            stm.setInt(1, idCurso);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Aluno aluno = new Aluno(
+                rs.getString("nome"),
+                rs.getString("cpf"),
+                rs.getString("telefone"),
+                rs.getString("email"),
+                rs.getDate("datanasc"),
+                rs.getInt("ativo")
+            );
+            alunos.add(aluno);
+        }
+            }
+            return alunos;
+        }
+
+    
+  
 }

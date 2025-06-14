@@ -5,12 +5,15 @@
 package gui;
 
 import dao.AlunoDAO;
+import dao.CursoDAO;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,8 +33,8 @@ public class TabelaAlunos extends JFrame {
 
 
     public TabelaAlunos(){
-        setTitle("Lista de Clientes");
-        setSize(800, 400);
+        setTitle("Lista de Alunos");
+        setSize(1000, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         try {
@@ -40,18 +43,23 @@ public class TabelaAlunos extends JFrame {
             List<Aluno> aluno = dao.listar();
 
 
-            String[] colunas = {"NOME", "CPF", "EMAIL", "TELEFONE","NASCIMENTO"};
+            String[] colunas = {"ID","NOME", "CPF","TELEFONE", "EMAIL" ,"NASCIMENTO","STATUS","CURSO"};
             DefaultTableModel model = new DefaultTableModel(colunas, 0);
   
             for (Aluno c : aluno) {
     
                 Object[] linha = {
+                dao.pegarID(c.getNome()),
                 c.getNome(),
                 c.getCpf(),
                 c.getTelefone(),
                 c.getEmail(),
-                c.getDatanasc()
-                };
+                c.getDatanasc(),
+                c.getAtivo(),
+                dao.pegarIDcurso(c.getNome())
+                };if(c.getAtivo() == 0){
+                 linha[6] = "Desabilitado";
+                }else{linha[6]= "Ativo";}
                 model.addRow(linha);
             }
 
@@ -64,9 +72,9 @@ public class TabelaAlunos extends JFrame {
 
 
             JPanel botoes = new JPanel();
-            JButton editar = new JButton("Editar");
+            JButton editar = new JButton("");
             JButton deletar = new JButton("Deletar");
-            JButton buscar = new JButton("Buscar");
+            JButton buscar = new JButton("Buscar por Curso");
             botoes.add(buscar);
             botoes.add(editar);
             botoes.add(deletar);
@@ -97,7 +105,39 @@ public class TabelaAlunos extends JFrame {
                     }
                 }
             });
-            
+            buscar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    CursoDAO cursoDAO = new CursoDAO();
+                    AlunoDAO alunoDAO = new AlunoDAO();
+                    String nomeCurso = JOptionPane.showInputDialog("Digite o nome do Curso:");
+
+                    try {
+                        int idCurso = cursoDAO.pegarIDcurso(nomeCurso);
+
+                        List<Aluno> alunos = alunoDAO.listarAlunosCurso(idCurso);
+
+                        for (Aluno c : alunos) {
+                            Object[] linha = {
+                                alunoDAO.pegarID(c.getNome()),
+                                c.getNome(),
+                                c.getCpf(),
+                                c.getTelefone(),
+                                c.getEmail(),
+                                c.getDatanasc(),
+                                c.getAtivo() == 0 ? "Desabilitado" : "Ativo",
+                                idCurso
+                        };
+                            model.setRowCount(0);
+                            model.addRow(linha);
+                        }
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(TabelaAlunos.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+
             setVisible(true);
             
         }

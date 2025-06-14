@@ -5,8 +5,8 @@
 package gui;
 
 import dao.CursoDAO;
-import java.lang.System.Logger;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import model.Curso;
@@ -41,17 +41,15 @@ public class CadastroCurso extends javax.swing.JFrame {
         carga = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         limite = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        ativos = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         id = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
         cadastrar = new javax.swing.JButton();
         desativar = new javax.swing.JButton();
         abilitar = new javax.swing.JButton();
         editar = new javax.swing.JButton();
-        excluir = new javax.swing.JButton();
         consultar = new javax.swing.JButton();
         voltar = new javax.swing.JButton();
+        atualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,8 +64,6 @@ public class CadastroCurso extends javax.swing.JFrame {
         jLabel3.setText("Carga Horária:");
 
         jLabel4.setText("Limite de Alunos:");
-
-        jLabel5.setText("Ativos:");
 
         jLabel6.setText("ID :");
 
@@ -93,45 +89,60 @@ public class CadastroCurso extends javax.swing.JFrame {
         });
 
         editar.setText("Editar");
-
-        excluir.setText("Excluir");
+        editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarActionPerformed(evt);
+            }
+        });
 
         consultar.setText("Consultar");
+        consultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consultarActionPerformed(evt);
+            }
+        });
 
         voltar.setText("Voltar");
+
+        atualizar.setText("Atualizar");
+        atualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                atualizarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(12, 12, 12))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(excluir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cadastrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(cadastrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                                .addComponent(consultar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel6)
+                        .addGap(10, 10, 10)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(nome)
+                            .addComponent(nome, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
                             .addComponent(carga)
                             .addComponent(limite)
-                            .addComponent(ativos)
-                            .addComponent(id, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))
+                            .addComponent(id))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(consultar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(editar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(editar, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                            .addComponent(atualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(36, 36, 36)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(desativar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -157,24 +168,20 @@ public class CadastroCurso extends javax.swing.JFrame {
                     .addComponent(limite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ativos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(70, 70, 70)
+                .addGap(110, 110, 110)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cadastrar)
                     .addComponent(abilitar)
                     .addComponent(editar))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(excluir)
-                    .addComponent(consultar)
                     .addComponent(desativar)
-                    .addComponent(voltar))
-                .addContainerGap(85, Short.MAX_VALUE))
+                    .addComponent(voltar)
+                    .addComponent(atualizar)
+                    .addComponent(consultar))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -202,14 +209,14 @@ public class CadastroCurso extends javax.swing.JFrame {
         int idCurso = Integer.parseInt(id.getText());
         int cargaHoraria = Integer.parseInt(carga.getText());
         int limiteAlunos = Integer.parseInt(limite.getText());
-        int ativo = Integer.parseInt(ativos.getText());
+        int ativo = Integer.parseInt(id.getText());
         
         
-        Curso curso = new Curso(idCurso,nome.getText(),cargaHoraria,limiteAlunos,ativo);
+        Curso curso = new Curso(idCurso,nome.getText(),cargaHoraria,limiteAlunos,1);
         
         CursoDAO dao = new CursoDAO();
         try {
-            dao.insertDB(idCurso,nome.getText(),cargaHoraria,limiteAlunos,ativo);
+            dao.insertDB(idCurso,nome.getText(),cargaHoraria,limiteAlunos,1);
             JOptionPane.showMessageDialog(rootPane, "Curso Cadastrado com sucesso");
         } catch (Exception e) {
             System.out.println("Erro no cadastro:"+e);
@@ -233,7 +240,7 @@ public class CadastroCurso extends javax.swing.JFrame {
     }//GEN-LAST:event_desativarActionPerformed
 
     private void abilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abilitarActionPerformed
-               CursoDAO dao = new CursoDAO();
+       CursoDAO dao = new CursoDAO();
        
        String n = JOptionPane.showInputDialog("Digite o ID do Curso:");
        
@@ -246,6 +253,58 @@ public class CadastroCurso extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(CadastroCurso.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_abilitarActionPerformed
+
+    private void editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarActionPerformed
+        CursoDAO dao = new CursoDAO();
+        String n = JOptionPane.showInputDialog("Digite o ID do curso:");
+        int ids = Integer.parseInt(n);
+        id.setEditable(false);
+        
+        try {
+           List<Curso> cursos = dao.Editar(ids);
+           for (Curso c : cursos) {
+    
+                Object[] dados = {
+                c.getIdCurso(),
+                c.getNome(),
+                c.getCargaHoraria(),
+                c.getLimiteAlunos(),
+                };
+                id.setText(dados[0].toString());
+                nome.setText(dados[1].toString());
+                carga.setText(dados[2].toString());
+                limite.setText(dados[3].toString());
+           }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Erro ao editar. Tente novamente");
+        }
+    }//GEN-LAST:event_editarActionPerformed
+
+    private void atualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarActionPerformed
+       CursoDAO curso = new CursoDAO();
+       String n = JOptionPane.showInputDialog("Confirme o ID do curso:");
+       int id = Integer.parseInt(n);
+       int cargaHoraria = Integer.parseInt(carga.getText());
+       int limiteAlunos = Integer.parseInt(limite.getText());
+        try {
+            curso.editarCurso(id, nome.getText(), cargaHoraria, limiteAlunos);
+            JOptionPane.showMessageDialog(rootPane, "Curso atualizado com sucesso");
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Erro ao atualizar. Tente novamente");
+        }  
+    }//GEN-LAST:event_atualizarActionPerformed
+
+    private void consultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarActionPerformed
+       TabelaCursos tabela = new TabelaCursos();
+       
+        try {
+            tabela.tabela();
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(CadastroCurso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_consultarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -284,19 +343,17 @@ public class CadastroCurso extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton abilitar;
-    private javax.swing.JTextField ativos;
+    private javax.swing.JButton atualizar;
     private javax.swing.JButton cadastrar;
     private javax.swing.JTextField carga;
     private javax.swing.JButton consultar;
     private javax.swing.JButton desativar;
     private javax.swing.JButton editar;
-    private javax.swing.JButton excluir;
     private javax.swing.JTextField id;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField limite;
