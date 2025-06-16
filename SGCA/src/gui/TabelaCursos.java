@@ -44,7 +44,9 @@ public class TabelaCursos extends JFrame{
             DefaultTableModel model = new DefaultTableModel(colunas, 0);
   
             for (Curso c : curso) {
-    
+                if(c.getAtivo() == 0){
+                    return;
+                }
                 Object[] linha = {
                 c.getIdCurso(),
                 c.getNome(),

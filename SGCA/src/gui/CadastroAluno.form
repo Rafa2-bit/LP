@@ -69,33 +69,20 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="jLabel7" min="-2" pref="53" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="Atualizar" max="32767" attributes="0"/>
                           <Component id="jLabel5" alignment="1" min="-2" pref="56" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="1" min="-2" pref="56" max="-2" attributes="0"/>
                           <Component id="jLabel6" alignment="0" max="32767" attributes="0"/>
                           <Component id="jLabel3" alignment="1" min="-2" pref="56" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="1" min="-2" pref="56" max="-2" attributes="0"/>
                           <Component id="cadastrar" alignment="1" max="32767" attributes="0"/>
-                          <Component id="excluir" alignment="1" max="32767" attributes="0"/>
                       </Group>
+                      <Component id="lista" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel7" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="limpar" max="32767" attributes="0"/>
-                              <Component id="editar" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="49" pref="49" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="reabilitar" alignment="0" min="-2" pref="88" max="-2" attributes="0"/>
-                              <Component id="desabilitar" alignment="1" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="curso" pref="152" max="32767" attributes="0"/>
                               <Component id="nome" max="32767" attributes="0"/>
@@ -104,17 +91,23 @@
                               <Component id="email" max="32767" attributes="0"/>
                               <Component id="datanasc" pref="152" max="32767" attributes="0"/>
                           </Group>
-                      </Group>
-                  </Group>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace pref="48" max="32767" attributes="0"/>
+                          <EmptySpace pref="127" max="32767" attributes="0"/>
                           <Component id="voltar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-                          <Component id="lista" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="Atualizar" pref="80" max="32767" attributes="0"/>
+                              <Component id="editar" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="reabilitar" alignment="0" min="-2" pref="88" max="-2" attributes="0"/>
+                              <Component id="desabilitar" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                          <Component id="limpar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -159,18 +152,16 @@
                       <Component id="cadastrar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="editar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="reabilitar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lista" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="limpar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="excluir" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="desabilitar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="voltar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="limpar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lista" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="Atualizar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="Atualizar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="12" max="32767" attributes="0"/>
+                  <EmptySpace pref="47" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -250,23 +241,21 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editarActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="excluir">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Excluir"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="excluirActionPerformed"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JButton" name="reabilitar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Reabilitar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reabilitarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="desabilitar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Desabilitar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="desabilitarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="limpar">
           <Properties>

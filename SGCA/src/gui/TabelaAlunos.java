@@ -47,7 +47,9 @@ public class TabelaAlunos extends JFrame {
             DefaultTableModel model = new DefaultTableModel(colunas, 0);
   
             for (Aluno c : aluno) {
-    
+                if(c.getAtivo() == 0){
+                    continue;
+                }
                 Object[] linha = {
                 dao.pegarID(c.getNome()),
                 c.getNome(),
@@ -89,7 +91,7 @@ public class TabelaAlunos extends JFrame {
             deletar.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String n = JOptionPane.showInputDialog("Digite o ID do Aluno");
+                    String n = JOptionPane.showInputDialog("Digite o ID do Aluno:");
         
                     int id = Integer.parseInt(n);
         
@@ -100,7 +102,7 @@ public class TabelaAlunos extends JFrame {
                         JOptionPane.showMessageDialog(rootPane, "Aluno deletado com sucesso");
                     }
                     catch(Exception ex){
-                        JOptionPane.showMessageDialog(rootPane, "Erro ao deletar");
+                        JOptionPane.showMessageDialog(rootPane, "Erro ao deletar. Tente Novamente");
                         System.out.println("Erro ao Deletar:"+ex);
                     }
                 }

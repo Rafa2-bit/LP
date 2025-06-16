@@ -3,6 +3,7 @@ package factory;
 
 import gui.CadastroAluno;
 import gui.CadastroCurso;
+import gui.SplashScreen;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -19,7 +20,7 @@ public class Conexao {
     
      java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CadastroAluno().setVisible(true);
+                new SplashScreen().setVisible(true);
             }
         });
     

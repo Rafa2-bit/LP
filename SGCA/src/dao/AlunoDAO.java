@@ -26,8 +26,8 @@ public class AlunoDAO {
         this.conn = new ConnectionDB().getConnection();
     }
     
-    public void insertDB(String nome,String cpf,String telefone,String email,Date datanasc,int curso)throws SQLException{
-        String sql = "INSERT INTO aluno(nome, cpf, telefone, email, datanasc, curso) VALUES (?, ?, ?, ?, ?, ?)";
+    public void insertDB(String nome,String cpf,String telefone,String email,Date datanasc,int ativo,int curso)throws SQLException{
+        String sql = "INSERT INTO aluno(nome, cpf, telefone, email, datanasc,ativo, curso) VALUES (?, ?, ?, ?, ?, ?,?)";
         PreparedStatement stm = conn.prepareStatement(sql);
       try{
         stm.setString(1, nome);
@@ -35,7 +35,8 @@ public class AlunoDAO {
         stm.setString(3, telefone);
         stm.setString(4, email);
         stm.setDate(5, (java.sql.Date)datanasc);
-        stm.setInt(6, curso);
+        stm.setInt(6, ativo);
+        stm.setInt(7, curso);
     
         stm.executeUpdate();
  
