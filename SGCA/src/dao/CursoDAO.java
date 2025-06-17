@@ -2,6 +2,8 @@
 package dao;
 
 import factory.ConnectionDB;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -172,7 +174,63 @@ public class CursoDAO {
             return id;
         }
 
-     
+    public void gerarRelatorioAlunosAtivos(String caminhoArquivo) {
+    String sql = "SELECT c.nome AS curso, COUNT(a.idAluno) AS qtd_alunos " +
+                 "FROM aluno a " +
+                 "JOIN curso c ON a.curso = c.idCurso " +
+                 "WHERE a.ativo = 1 " +
+                 "GROUP BY c.nome";
+
+    try (Connection conn = new ConnectionDB().getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery();
+         BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoArquivo))) {
+
+        writer.write("Relatório de Alunos Ativos por Curso\n");
+        writer.write("------------------------------------\n");
+
+        while (rs.next()) {
+            String curso = rs.getString("curso");
+            int qtd = rs.getInt("qtd_alunos");
+
+            writer.write("Curso: " + curso + " - " + qtd + " aluno(s) ativo(s)\n");
+        }
+
+        System.out.println("Relatório gerado com sucesso em: " + caminhoArquivo);
+
+    } catch (Exception e) {
+        System.out.println("Erro ao gerar relatório: " + e.getMessage());
+    }
+    }
+    public void gerarRelatorioAlunosDesabilitados(String caminhoArquivo) {
+    String sql = "SELECT c.nome AS curso, COUNT(a.idAluno) AS qtd_alunos " +
+                 "FROM aluno a " +
+                 "JOIN curso c ON a.curso = c.idCurso " +
+                 "WHERE a.ativo = 0 " +
+                 "GROUP BY c.nome";
+
+    try (Connection conn = new ConnectionDB().getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery();
+         BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoArquivo))) {
+
+        writer.write("Relatório de Alunos Desabilitados por Curso\n");
+        writer.write("------------------------------------\n");
+
+        while (rs.next()) {
+            String curso = rs.getString("curso");
+            int qtd = rs.getInt("qtd_alunos");
+
+            writer.write("Curso: " + curso + " - " + qtd + " aluno(s) desabilitados(s)\n");
+        }
+
+        System.out.println("Relatório gerado com sucesso em: " + caminhoArquivo);
+
+    } catch (Exception e) {
+        System.out.println("Erro ao gerar relatório: " + e.getMessage());
+    }
+    }
+
         
         
       

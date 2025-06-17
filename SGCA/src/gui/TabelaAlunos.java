@@ -34,7 +34,7 @@ public class TabelaAlunos extends JFrame {
 
     public TabelaAlunos(){
         setTitle("Lista de Alunos");
-        setSize(1000, 500);
+        setSize(900, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         try {
@@ -47,9 +47,6 @@ public class TabelaAlunos extends JFrame {
             DefaultTableModel model = new DefaultTableModel(colunas, 0);
   
             for (Aluno c : aluno) {
-                if(c.getAtivo() == 0){
-                    continue;
-                }
                 Object[] linha = {
                 dao.pegarID(c.getNome()),
                 c.getNome(),
@@ -59,9 +56,7 @@ public class TabelaAlunos extends JFrame {
                 c.getDatanasc(),
                 c.getAtivo(),
                 dao.pegarIDcurso(c.getNome())
-                };if(c.getAtivo() == 0){
-                 linha[6] = "Desabilitado";
-                }else{linha[6]= "Ativo";}
+                };if(c.getAtivo() > 0){linha[6] = "Ativo";}else{linha[6] = "Desabilitado";}
                 model.addRow(linha);
             }
 
@@ -74,11 +69,9 @@ public class TabelaAlunos extends JFrame {
 
 
             JPanel botoes = new JPanel();
-            JButton editar = new JButton("");
             JButton deletar = new JButton("Deletar");
             JButton buscar = new JButton("Buscar por Curso");
             botoes.add(buscar);
-            botoes.add(editar);
             botoes.add(deletar);
 
 
@@ -120,6 +113,7 @@ public class TabelaAlunos extends JFrame {
                         List<Aluno> alunos = alunoDAO.listarAlunosCurso(idCurso);
 
                         for (Aluno c : alunos) {
+                            if(c.getAtivo() == 0){continue;}
                             Object[] linha = {
                                 alunoDAO.pegarID(c.getNome()),
                                 c.getNome(),
@@ -127,7 +121,7 @@ public class TabelaAlunos extends JFrame {
                                 c.getTelefone(),
                                 c.getEmail(),
                                 c.getDatanasc(),
-                                c.getAtivo() == 0 ? "Desabilitado" : "Ativo",
+                                c.getAtivo(),
                                 idCurso
                         };
                             model.setRowCount(0);

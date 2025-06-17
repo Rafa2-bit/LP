@@ -285,7 +285,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void nomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeActionPerformed
-        
+        // TODO add your handling code here:
     }//GEN-LAST:event_nomeActionPerformed
 
     private void cpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpfActionPerformed
@@ -374,10 +374,7 @@ public class CadastroAluno extends javax.swing.JFrame {
                 datanasc.setText(dados[4].toString());
                 curso.setText(dados[5].toString());
             }
-        
-           
-            
-        } catch (SQLException ex) {
+        }catch (SQLException ex) {
             Logger.getLogger(CadastroAluno.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_editarActionPerformed

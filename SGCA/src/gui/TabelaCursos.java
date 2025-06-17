@@ -4,23 +4,23 @@
  */
 package gui;
 
-import dao.AlunoDAO;
 import dao.CursoDAO;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import model.Aluno;
 import model.Curso;
 
 /**
@@ -31,7 +31,7 @@ public class TabelaCursos extends JFrame{
     
      public TabelaCursos(){
         setTitle("Lista de Cursos");
-        setSize(800, 400);
+        setSize(1000,500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         try {
@@ -44,9 +44,6 @@ public class TabelaCursos extends JFrame{
             DefaultTableModel model = new DefaultTableModel(colunas, 0);
   
             for (Curso c : curso) {
-                if(c.getAtivo() == 0){
-                    return;
-                }
                 Object[] linha = {
                 c.getIdCurso(),
                 c.getNome(),
@@ -68,11 +65,11 @@ public class TabelaCursos extends JFrame{
 
 
             JPanel botoes = new JPanel();
-            JButton editar = new JButton("");
+            JButton relatorio = new JButton("Relatório");
             JButton deletar = new JButton("Deletar");
             JButton buscar = new JButton("Buscar");
             botoes.add(buscar);
-            botoes.add(editar);
+            botoes.add(relatorio);
             botoes.add(deletar);
 
 
@@ -101,6 +98,29 @@ public class TabelaCursos extends JFrame{
                     }
                 }
             });
+            
+            relatorio.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String[] opcoes = {"Ativos", "Desabilitados", "Cancelar"};
+                    int n = JOptionPane.showOptionDialog(null, "Deseja o relatório dos alunos ativos ou desabilitados?", "Confirme", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,null, opcoes, opcoes[0]);
+                
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setDialogTitle("Salvar relatório");
+
+                    int userSelection = fileChooser.showSaveDialog(null);
+                    if(n == 0){
+                    if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File arquivo = fileChooser.getSelectedFile();
+                    dao.gerarRelatorioAlunosAtivos(arquivo.getAbsolutePath());
+                }}if(n == 1){
+                    if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File arquivo = fileChooser.getSelectedFile();
+                    dao.gerarRelatorioAlunosDesabilitados(arquivo.getAbsolutePath());
+                }
+                }
+                
+                }});
             
             setVisible(true);
             
