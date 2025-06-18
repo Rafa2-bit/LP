@@ -15,7 +15,7 @@ public class Conexao {
 
     public static void main(String[] args)  throws SQLException{
        Connection connection = new ConnectionDB().getConnection();
-        System.out.println("Conexão aberta");
+        System.out.println("Conexao aberta");
         connection.close();
     
      java.awt.EventQueue.invokeLater(new Runnable() {

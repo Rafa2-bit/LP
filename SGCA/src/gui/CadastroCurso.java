@@ -227,11 +227,18 @@ public class CadastroCurso extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarActionPerformed
+        if(nome.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área Nome precisa ser preenchida");return;}
+        if(carga.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área Carga Horária precisa ser preenchida");return;}
+        if(limite.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área Limite de Alunos precisa ser preenchida");return;}
+        if(id.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área ID precisa ser preenchida");return;}
         int idCurso = Integer.parseInt(id.getText());
         int cargaHoraria = Integer.parseInt(carga.getText());
         int limiteAlunos = Integer.parseInt(limite.getText());
         int ativo = Integer.parseInt(id.getText());
         id.setEditable(true);
+        if(nome.getText().length() <= 3){JOptionPane.showMessageDialog(rootPane, "O nome deve ter no mínimo 3 dígitos");return;}
+        if(cargaHoraria < 20){JOptionPane.showMessageDialog(rootPane, "A carga Horaria deve ser no mínimo 20");return;}
+        if(limiteAlunos < 1){JOptionPane.showMessageDialog(rootPane, "O curso deve ter no mínimo 1 aluno");return;}
         
         Curso curso = new Curso(idCurso,nome.getText(),cargaHoraria,limiteAlunos,1);
         
@@ -303,12 +310,19 @@ public class CadastroCurso extends javax.swing.JFrame {
     }//GEN-LAST:event_editarActionPerformed
 
     private void atualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarActionPerformed
+       if(nome.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área Nome precisa ser preenchida");return;}
+       if(carga.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área Carga Horária precisa ser preenchida");return;}
+       if(limite.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área Limite de Alunos precisa ser preenchida");return;}
+       if(id.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área ID precisa ser preenchida");return;}
        CursoDAO curso = new CursoDAO();
        id.setEditable(true);
        String n = JOptionPane.showInputDialog("Confirme o ID do curso:");
        int id = Integer.parseInt(n);
        int cargaHoraria = Integer.parseInt(carga.getText());
        int limiteAlunos = Integer.parseInt(limite.getText());
+       if(nome.getText().length() <= 3){JOptionPane.showMessageDialog(rootPane, "O nome deve ter no mínimo 3 dígitos");return;}
+       if(cargaHoraria < 20){JOptionPane.showMessageDialog(rootPane, "A carga Horaria deve ser no mínimo 20");return;}
+       if(limiteAlunos < 1){JOptionPane.showMessageDialog(rootPane, "O curso deve ter no mínimo 1 aluno");return;}
         try {
             curso.editarCurso(id, nome.getText(), cargaHoraria, limiteAlunos);
             JOptionPane.showMessageDialog(rootPane, "Curso atualizado com sucesso");

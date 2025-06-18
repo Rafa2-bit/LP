@@ -2,6 +2,8 @@
 package model;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
 
 /**
  *
@@ -78,6 +80,28 @@ public class Aluno {
         this.ativo = ativo;
     }
     
-    
-    
+    public boolean validarCPF(String cpf) {
+        cpf = cpf.replaceAll("[^0-9]", "");
+        if (cpf.length() != 11) 
+            return false;
+        if (cpf.matches("(\\d)\\1{10}")) 
+            return false;
+        return true;
+    }
+    public boolean validarEmail(String email) {
+    String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+    return email.matches(regex);
+    }
+    public boolean validarTelefone(String telefone) {
+    telefone = telefone.replaceAll("[^0-9]", "");
+    return telefone.length() == 11;
+    }
+    public boolean validarIdade(Date dataNasc) {
+    LocalDate nascimento = dataNasc.toLocalDate();         
+    LocalDate hoje = LocalDate.now();                     
+    int idade = Period.between(nascimento, hoje).getYears();
+
+    return idade >= 16;
+}
+
 }

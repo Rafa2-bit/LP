@@ -314,7 +314,12 @@ public class CadastroAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_voltarActionPerformed
 
     private void cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarActionPerformed
-        
+        if(nome.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área Nome deve ser preenchida");return;}
+        if(nome.getText().length() <= 3){JOptionPane.showMessageDialog(rootPane, "O nome deve ter no mínimo 3 dígitos");return;}        
+        if(cpf.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área CPF deve ser preenchida");return;}
+        if(telefone.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área Telefone deve ser preenchida");return;}
+        if(cpf.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área Data de Nascimento deve ser preenchida");return;}
+        if(curso.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "O aluno deve ser cadastrado em um curso");return;}
         try{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dataConvertida = LocalDate.parse(datanasc.getText(), formatter);
@@ -322,12 +327,15 @@ public class CadastroAluno extends javax.swing.JFrame {
         int IDcurso = Integer.parseInt(curso.getText());
         
         Aluno aluno = new Aluno(nome.getText(),cpf.getText(),telefone.getText(),email.getText(),data,1);
+        if(!aluno.validarCPF(cpf.getText())){JOptionPane.showMessageDialog(rootPane,"CPF inválido");return;}
+        if(!aluno.validarEmail(email.getText())){JOptionPane.showMessageDialog(rootPane,"Email inválido");return;}
+        if(!aluno.validarTelefone(telefone.getText())){JOptionPane.showMessageDialog(rootPane,"Telefone inválido");return;}
+        if (!aluno.validarIdade(data)) {JOptionPane.showMessageDialog(null, "Idade inválida. Aluno deve ter no mínimo 16 anos.");return;}
         
         AlunoDAO dao = new AlunoDAO();
-        
             dao.insertDB(nome.getText(),cpf.getText(),telefone.getText(),email.getText(), data,1,IDcurso);
             JOptionPane.showMessageDialog(rootPane, "Aluno cadastrado com sucesso");
-        } catch (SQLException e) {
+        }catch (SQLException e) {
             Logger.getLogger("Erro no cadastro:"+e);
         }
     }//GEN-LAST:event_cadastrarActionPerformed
@@ -358,13 +366,16 @@ public class CadastroAluno extends javax.swing.JFrame {
         try {
            List<Aluno> alunos = aluno.Editar(id);
            for (Aluno c : alunos) {
+               LocalDate localDate = c.getDatanasc().toLocalDate();
+                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                String dataFormatada = localDate.format(formato);
     
                 Object[] dados = {
                 c.getNome(),
                 c.getCpf(),
                 c.getTelefone(),
                 c.getEmail(),
-                c.getDatanasc(),
+                dataFormatada,
                 aluno.pegarIDcurso(c.getNome())
                 };
                 nome.setText((String) dados[0]);
@@ -380,26 +391,42 @@ public class CadastroAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_editarActionPerformed
 
     private void AtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtualizarActionPerformed
-       AlunoDAO aluno = new AlunoDAO();
-       String n = JOptionPane.showInputDialog("Confirme o ID do aluno:");
-       int id = Integer.parseInt(n);
-       
-       int idcurso = Integer.parseInt(curso.getText()); 
-       
-       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate dataConvertida = LocalDate.parse(datanasc.getText(), formatter);
-        Date data = Date.valueOf(dataConvertida);
-        
-        try {
-            aluno.atualizar(id, nome.getText(), cpf.getText(), telefone.getText(), email.getText(), data,idcurso );
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastroAluno.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    if (nome.getText().length() <= 3){JOptionPane.showMessageDialog(rootPane, "O nome deve ter no mínimo 3 dígitos");return;}
+    if (curso.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "O aluno deve ser cadastrado em um curso");return;}
+    
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    LocalDate dataConvertida;
+    try {
+        dataConvertida = LocalDate.parse(datanasc.getText(), formatter);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(rootPane, "Data inválida! Use o formato dd/MM/yyyy");
+        return;
+    }
+
+    Date data = Date.valueOf(dataConvertida); 
+    AlunoDAO aluno = new AlunoDAO();
+    Aluno aluno2 = new Aluno(nome.getText(), cpf.getText(), telefone.getText(), email.getText(), data, 1);
+
+    String n = JOptionPane.showInputDialog("Confirme o ID do aluno:");
+    int id = Integer.parseInt(n);
+    int idcurso = Integer.parseInt(curso.getText());
+    if(!n.equals(aluno2.getIdAluno())){JOptionPane.showMessageDialog(rootPane, "O ID do aluno é diferente!");return;}
+    if (!aluno2.validarCPF(cpf.getText())) {JOptionPane.showMessageDialog(rootPane, "CPF inválido");return;}
+    if (!aluno2.validarEmail(email.getText())) {JOptionPane.showMessageDialog(rootPane, "Email inválido");return;}
+    if (!aluno2.validarTelefone(telefone.getText())) {JOptionPane.showMessageDialog(rootPane, "Telefone inválido");return;}
+    if (!aluno2.validarIdade(data)) {JOptionPane.showMessageDialog(null, "Idade inválida. Aluno deve ter no mínimo 16 anos.");return;}
+
+    try {
+        aluno.atualizar(id, nome.getText(), cpf.getText(), telefone.getText(), email.getText(), data, idcurso);
+        JOptionPane.showMessageDialog(rootPane, "Aluno atualizado com sucesso");
+    } catch (SQLException ex) {
+        Logger.getLogger(CadastroAluno.class.getName()).log(Level.SEVERE, null, ex);
+    }
     }//GEN-LAST:event_AtualizarActionPerformed
 
     private void desabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desabilitarActionPerformed
        AlunoDAO dao = new AlunoDAO();
-       String n = JOptionPane.showInputDialog("Digite o ID do Curso:");
+       String n = JOptionPane.showInputDialog("Digite o ID do Aluno:");
        
        int id = Integer.parseInt(n);
        

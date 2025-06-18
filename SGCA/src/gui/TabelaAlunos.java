@@ -106,8 +106,8 @@ public class TabelaAlunos extends JFrame {
                     CursoDAO cursoDAO = new CursoDAO();
                     AlunoDAO alunoDAO = new AlunoDAO();
                     String nomeCurso = JOptionPane.showInputDialog("Digite o nome do Curso:");
-
                     try {
+                        model.setRowCount(0);
                         int idCurso = cursoDAO.pegarIDcurso(nomeCurso);
 
                         List<Aluno> alunos = alunoDAO.listarAlunosCurso(idCurso);
@@ -123,8 +123,7 @@ public class TabelaAlunos extends JFrame {
                                 c.getDatanasc(),
                                 c.getAtivo(),
                                 idCurso
-                        };
-                            model.setRowCount(0);
+                        };if(c.getAtivo() > 0){linha[6] = "Ativo";}else{linha[6] = "Desabilitado";}
                             model.addRow(linha);
                         }
 

@@ -117,7 +117,7 @@ public class TabelaCursos extends JFrame{
                     if (userSelection == JFileChooser.APPROVE_OPTION) {
                     File arquivo = fileChooser.getSelectedFile();
                     dao.gerarRelatorioAlunosDesabilitados(arquivo.getAbsolutePath());
-                }
+                }else{return;}
                 }
                 
                 }});
