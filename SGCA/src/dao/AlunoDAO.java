@@ -203,7 +203,19 @@ public class AlunoDAO {
     }
     return id;
     }
+    public String pegarNomecurso(int id) throws SQLException {
+            String sql = "SELECT nome FROM curso WHERE idCurso = ?";
+            String nome = null;
+            try (PreparedStatement stm = conn.prepareStatement(sql)) {
+                stm.setInt(1, id);
+                ResultSet rs = stm.executeQuery();
 
+                    if (rs.next()) {
+                        nome = rs.getString("nome");
+                    }
+            }
+            return nome;
+        }
     
     public List<Aluno> listarAlunosCurso(int idCurso) throws SQLException {
         List<Aluno> alunos = new ArrayList<>();

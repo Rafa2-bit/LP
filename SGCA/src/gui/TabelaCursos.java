@@ -4,6 +4,7 @@
  */
 package gui;
 
+import dao.AlunoDAO;
 import dao.CursoDAO;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -12,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -21,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import model.Aluno;
 import model.Curso;
 
 /**
@@ -41,9 +45,10 @@ public class TabelaCursos extends JFrame{
 
 
            String[] colunas = {"ID", "CURSO", "CARGA HORARIA", "LIMITE DE ALUNOS","STATUS"};
-            DefaultTableModel model = new DefaultTableModel(colunas, 0);
+           DefaultTableModel model = new DefaultTableModel(colunas, 0);
   
             for (Curso c : curso) {
+                if(c.getAtivo() == 0){continue;}
                 Object[] linha = {
                 c.getIdCurso(),
                 c.getNome(),
@@ -68,6 +73,8 @@ public class TabelaCursos extends JFrame{
             JButton relatorio = new JButton("Relatório");
             JButton deletar = new JButton("Deletar");
             JButton buscar = new JButton("Buscar");
+            JButton listar = new JButton("Listar Todos");
+            botoes.add(listar);
             botoes.add(buscar);
             botoes.add(relatorio);
             botoes.add(deletar);
@@ -78,6 +85,24 @@ public class TabelaCursos extends JFrame{
 
 
             getContentPane().add(painel);
+            
+            listar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    model.setRowCount(0);
+                    for (Curso c : curso) {
+                        if(c.getAtivo() == 0){continue;}
+                        Object[] linha = {
+                        c.getIdCurso(),
+                        c.getNome(),
+                        c.getCargaHoraria(),
+                        c.getLimiteAlunos(),
+                        c.getAtivo()
+                    };
+                    if(c.getAtivo() == 0){linha[4] = "Desabilitado";}else{linha[4]= "Ativo";}
+                model.addRow(linha);
+            }
+                }});
 
             deletar.addActionListener(new ActionListener() {
                 @Override
@@ -104,7 +129,9 @@ public class TabelaCursos extends JFrame{
                 public void actionPerformed(ActionEvent e) {
                     String[] opcoes = {"Ativos", "Desabilitados", "Cancelar"};
                     int n = JOptionPane.showOptionDialog(null, "Deseja o relatório dos alunos ativos ou desabilitados?", "Confirme", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,null, opcoes, opcoes[0]);
-                
+                    if (n == 2) {
+                        return;
+                    }
                     JFileChooser fileChooser = new JFileChooser();
                     fileChooser.setDialogTitle("Salvar relatório");
 
@@ -119,6 +146,40 @@ public class TabelaCursos extends JFrame{
                     dao.gerarRelatorioAlunosDesabilitados(arquivo.getAbsolutePath());
                 }else{return;}
                 }
+                
+                }});
+            
+            buscar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    CursoDAO cursoDAO = new CursoDAO();
+                    AlunoDAO alunoDAO = new AlunoDAO();
+                    String nomeCurso = JOptionPane.showInputDialog("Digite o nome do Curso:");
+                    try {
+                        model.setRowCount(0);
+                        int idCurso = cursoDAO.pegarIDcurso(nomeCurso);
+
+                        List<Aluno> alunos = alunoDAO.listarAlunosCurso(idCurso);
+
+                        for (Aluno c : alunos) {
+                            
+                            if(c.getAtivo() == 0){continue;}
+                            Object[] linha = {
+                                alunoDAO.pegarID(c.getNome()),
+                                c.getNome(),
+                                c.getCpf(),
+                                c.getTelefone(),
+                                c.getEmail(),
+                                c.getDatanasc(),
+                                "Ativo",
+                                idCurso
+                        };
+                            model.addRow(linha);
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(TabelaAlunos.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                
                 
                 }});
             

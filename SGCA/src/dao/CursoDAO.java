@@ -229,7 +229,29 @@ public class CursoDAO {
     }
     }
 
-        
+    public boolean podeCadastrarMaisAlunos(int idCurso) throws SQLException {
+    String sql = "SELECT COUNT(*) AS total FROM aluno WHERE curso = ?";
+    try (PreparedStatement stm = conn.prepareStatement(sql)) {
+        stm.setInt(1, idCurso);
+        ResultSet rs = stm.executeQuery();
+
+        if (rs.next()) {
+            int totalMatriculados = rs.getInt("total");
+            String sqlLimite = "SELECT limiteAlunos FROM curso WHERE idCurso = ?";
+            try (PreparedStatement stm2 = conn.prepareStatement(sqlLimite)) {
+                stm2.setInt(1, idCurso);
+                ResultSet rs2 = stm2.executeQuery();
+
+                if (rs2.next()) {
+                    int limite = rs2.getInt("limiteAlunos");
+                    return totalMatriculados < limite;  
+                }
+            }
+        }
+    }
+    return false;
+    }
+
         
       
 }

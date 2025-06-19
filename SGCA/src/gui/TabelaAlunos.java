@@ -47,6 +47,7 @@ public class TabelaAlunos extends JFrame {
             DefaultTableModel model = new DefaultTableModel(colunas, 0);
   
             for (Aluno c : aluno) {
+                if(c.getAtivo() == 0){continue;}
                 Object[] linha = {
                 dao.pegarID(c.getNome()),
                 c.getNome(),
@@ -54,9 +55,9 @@ public class TabelaAlunos extends JFrame {
                 c.getTelefone(),
                 c.getEmail(),
                 c.getDatanasc(),
-                c.getAtivo(),
-                dao.pegarIDcurso(c.getNome())
-                };if(c.getAtivo() > 0){linha[6] = "Ativo";}else{linha[6] = "Desabilitado";}
+                "Ativo",
+                dao.pegarNomecurso(dao.pegarIDcurso(c.getNome()))
+                };
                 model.addRow(linha);
             }
 
@@ -69,8 +70,10 @@ public class TabelaAlunos extends JFrame {
 
 
             JPanel botoes = new JPanel();
+            JButton listar = new JButton("Listar Todos");
             JButton deletar = new JButton("Deletar");
             JButton buscar = new JButton("Buscar por Curso");
+            botoes.add(listar);
             botoes.add(buscar);
             botoes.add(deletar);
 
@@ -80,6 +83,32 @@ public class TabelaAlunos extends JFrame {
 
 
             getContentPane().add(painel);
+            
+            listar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    AlunoDAO dao = new AlunoDAO();
+                    
+                    model.setRowCount(0);
+                        try {
+                            for (Aluno c : aluno) {
+                            if(c.getAtivo() == 0){continue;}
+                            Object[] linha = {
+                                dao.pegarID(c.getNome()),
+                                c.getNome(),
+                                c.getCpf(),
+                                c.getTelefone(),
+                                c.getEmail(),
+                                c.getDatanasc(),
+                                "Ativo",
+                                dao.pegarNomecurso(dao.pegarIDcurso(c.getNome()))
+                            };
+                            model.addRow(linha);
+                        } }catch (SQLException ex) {
+                            Logger.getLogger(TabelaAlunos.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+            
+                }});
 
             deletar.addActionListener(new ActionListener() {
                 @Override
@@ -106,6 +135,10 @@ public class TabelaAlunos extends JFrame {
                     CursoDAO cursoDAO = new CursoDAO();
                     AlunoDAO alunoDAO = new AlunoDAO();
                     String nomeCurso = JOptionPane.showInputDialog("Digite o nome do Curso:");
+                    
+                    if (nomeCurso == null || nomeCurso.trim().isEmpty()) {
+                        return;
+                    }
                     try {
                         model.setRowCount(0);
                         int idCurso = cursoDAO.pegarIDcurso(nomeCurso);
@@ -113,6 +146,7 @@ public class TabelaAlunos extends JFrame {
                         List<Aluno> alunos = alunoDAO.listarAlunosCurso(idCurso);
 
                         for (Aluno c : alunos) {
+                            
                             if(c.getAtivo() == 0){continue;}
                             Object[] linha = {
                                 alunoDAO.pegarID(c.getNome()),
@@ -121,12 +155,11 @@ public class TabelaAlunos extends JFrame {
                                 c.getTelefone(),
                                 c.getEmail(),
                                 c.getDatanasc(),
-                                c.getAtivo(),
-                                idCurso
-                        };if(c.getAtivo() > 0){linha[6] = "Ativo";}else{linha[6] = "Desabilitado";}
+                                "Ativo",
+                                dao.pegarNomecurso(dao.pegarIDcurso(c.getNome()))
+                        };
                             model.addRow(linha);
                         }
-
                     } catch (SQLException ex) {
                         Logger.getLogger(TabelaAlunos.class.getName()).log(Level.SEVERE, null, ex);
                     }

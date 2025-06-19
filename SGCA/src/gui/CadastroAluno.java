@@ -5,6 +5,7 @@
 package gui;
 
 import dao.AlunoDAO;
+import dao.CursoDAO;
 import factory.ConnectionDB;
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -78,6 +79,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("SISTEMA DE CADASTRO DO ALUNO");
 
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Insira as informações abaixo:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 14))); // NOI18N
 
         jLabel2.setText("Nome:");
@@ -266,18 +268,18 @@ public class CadastroAluno extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
         );
 
@@ -331,10 +333,12 @@ public class CadastroAluno extends javax.swing.JFrame {
         if(!aluno.validarEmail(email.getText())){JOptionPane.showMessageDialog(rootPane,"Email inválido");return;}
         if(!aluno.validarTelefone(telefone.getText())){JOptionPane.showMessageDialog(rootPane,"Telefone inválido");return;}
         if (!aluno.validarIdade(data)) {JOptionPane.showMessageDialog(null, "Idade inválida. Aluno deve ter no mínimo 16 anos.");return;}
-        
+        CursoDAO dao1 = new CursoDAO();
         AlunoDAO dao = new AlunoDAO();
+        if (dao1.podeCadastrarMaisAlunos(IDcurso)) {
             dao.insertDB(nome.getText(),cpf.getText(),telefone.getText(),email.getText(), data,1,IDcurso);
-            JOptionPane.showMessageDialog(rootPane, "Aluno cadastrado com sucesso");
+            JOptionPane.showMessageDialog(rootPane, "Aluno cadastrado com sucesso");}
+        else {JOptionPane.showMessageDialog(null, "Limite de alunos atingido para esse curso.");}
         }catch (SQLException e) {
             Logger.getLogger("Erro no cadastro:"+e);
         }
@@ -410,7 +414,6 @@ public class CadastroAluno extends javax.swing.JFrame {
     String n = JOptionPane.showInputDialog("Confirme o ID do aluno:");
     int id = Integer.parseInt(n);
     int idcurso = Integer.parseInt(curso.getText());
-    if(!n.equals(aluno2.getIdAluno())){JOptionPane.showMessageDialog(rootPane, "O ID do aluno é diferente!");return;}
     if (!aluno2.validarCPF(cpf.getText())) {JOptionPane.showMessageDialog(rootPane, "CPF inválido");return;}
     if (!aluno2.validarEmail(email.getText())) {JOptionPane.showMessageDialog(rootPane, "Email inválido");return;}
     if (!aluno2.validarTelefone(telefone.getText())) {JOptionPane.showMessageDialog(rootPane, "Telefone inválido");return;}
