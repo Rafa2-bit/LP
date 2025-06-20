@@ -34,11 +34,11 @@ public class SplashScreen extends JFrame {
         setUndecorated(true);
 
        
-        Color backgroundColor = new Color(45, 45, 45); 
+        Color backgroundColor = new Color(100, 100, 100); 
         Color textColor = new Color(220, 220, 220); 
-        Color buttonColor = new Color(60, 60, 60); 
+        Color buttonColor = new Color(90, 90, 90); 
         Color buttonTextColor = new Color(200, 200, 200);
-        Color borderColor = new Color(45,45,45);
+        Color borderColor = new Color(50,50,50);
 
         getContentPane().setBackground(backgroundColor);
         setLayout(new BorderLayout());
@@ -58,7 +58,7 @@ public class SplashScreen extends JFrame {
         mainPanel.add(titleLabel, gbc);
 
         
-        JButton aluno = new JButton("Sistema de Cadastro de Alunos");
+        JButton aluno = new JButton("Cadastro de Alunos");
         JButton curso = new JButton("Cadastrar Novo Curso");
         aluno.setFont(new Font("Open Sans", Font.PLAIN, 18));
         aluno.setBackground(buttonColor);

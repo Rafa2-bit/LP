@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import model.Curso;
 
 /**
@@ -156,7 +157,7 @@ public class CursoDAO {
                }
            }   
         return cursos;
-    }
+        }
         
         public int pegarIDcurso(String nome) throws SQLException {
             String sql = "SELECT idCurso FROM curso WHERE nome = ?";
@@ -165,69 +166,12 @@ public class CursoDAO {
                 stm.setString(1, nome);
                 ResultSet rs = stm.executeQuery();
 
-                    if (rs.next()) {
-            id = rs.getInt("idCurso");
+                if (rs.next()) {
+                    id = rs.getInt("idCurso");
                 }
-            }
+            } if (id == 0){JOptionPane.showMessageDialog(null, "Esse curso não existe");}
             return id;
         }
-
-    public void gerarRelatorioAlunosAtivos(String caminhoArquivo) {
-    String sql = "SELECT c.nome AS curso, COUNT(a.idAluno) AS qtd_alunos " +
-                 "FROM aluno a " +
-                 "JOIN curso c ON a.curso = c.idCurso " +
-                 "WHERE a.ativo = 1 " +
-                 "GROUP BY c.nome";
-
-    try (Connection conn = new ConnectionDB().getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery();
-         BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoArquivo))) {
-
-        writer.write("Relatório de Alunos Ativos por Curso\n");
-        writer.write("------------------------------------\n");
-
-        while (rs.next()) {
-            String curso = rs.getString("curso");
-            int qtd = rs.getInt("qtd_alunos");
-
-            writer.write("Curso: " + curso + " - " + qtd + " aluno(s) ativo(s)\n");
-        }
-
-        System.out.println("Relatório gerado com sucesso em: " + caminhoArquivo);
-
-    } catch (Exception e) {
-        System.out.println("Erro ao gerar relatório: " + e.getMessage());
-    }
-    }
-    public void gerarRelatorioAlunosDesabilitados(String caminhoArquivo) {
-    String sql = "SELECT c.nome AS curso, COUNT(a.idAluno) AS qtd_alunos " +
-                 "FROM aluno a " +
-                 "JOIN curso c ON a.curso = c.idCurso " +
-                 "WHERE a.ativo = 0 " +
-                 "GROUP BY c.nome";
-
-    try (Connection conn = new ConnectionDB().getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery();
-         BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoArquivo))) {
-
-        writer.write("Relatório de Alunos Desabilitados por Curso\n");
-        writer.write("------------------------------------\n");
-
-        while (rs.next()) {
-            String curso = rs.getString("curso");
-            int qtd = rs.getInt("qtd_alunos");
-
-            writer.write("Curso: " + curso + " - " + qtd + " aluno(s) desabilitados(s)\n");
-        }
-
-        System.out.println("Relatório gerado com sucesso em: " + caminhoArquivo);
-
-    } catch (Exception e) {
-        System.out.println("Erro ao gerar relatório: " + e.getMessage());
-    }
-    }
 
     public boolean podeCadastrarMaisAlunos(int idCurso) throws SQLException {
     String sql = "SELECT COUNT(*) AS total FROM aluno WHERE curso = ?";
@@ -252,6 +196,117 @@ public class CursoDAO {
     return false;
     }
 
-        
+    public void exportarRelatorioAlunosAtivos(String caminhoArquivo) {
+        String sql = "SELECT c.nome AS curso, a.idAluno, a.nome AS aluno_nome " +
+                    "FROM aluno a " +
+                    "JOIN curso c ON a.curso = c.idCurso " +
+                    "WHERE a.ativo = 1 " +
+                    "ORDER BY c.nome, a.nome";
+
+        try (
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+        BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoArquivo))
+        ) {
+        String cursoAtual = "";
+        int contador = 0;
+        List<String> linhasCurso = new ArrayList<>();
+
+        while (rs.next()) {
+            String curso = rs.getString("curso");
+            int idAluno = rs.getInt("idAluno");
+            String nomeAluno = rs.getString("aluno_nome");
+
+            if (!curso.equals(cursoAtual)) {
+               
+                if (!cursoAtual.isEmpty()) {
+                    writer.write("Curso: " + cursoAtual + "\n");
+                    writer.write("Quantidade de alunos ativos: " + contador + "\n");
+                    for (String linha : linhasCurso) {
+                        writer.write(linha + "\n");
+                    }
+                    writer.write("\n");
+                }
+                
+                cursoAtual = curso;
+                contador = 0;
+                linhasCurso.clear();
+            }
+
+            contador++;
+            linhasCurso.add("- ID: " + idAluno + " | Nome: " + nomeAluno);
+        }
+
+      
+        if (!cursoAtual.isEmpty()) {
+            writer.write("Curso: " + cursoAtual + "\n");
+            writer.write("Quantidade de alunos ativos: " + contador + "\n");
+            for (String linha : linhasCurso) {
+                writer.write(linha + "\n");
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso!");
+
+        } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Erro ao gerar relatório: " + e.getMessage());
+        }
+        }
+
+    public void exportarRelatorioAlunosInativos(String caminhoArquivo) {
+        String sql = "SELECT c.nome AS curso, a.idAluno, a.nome AS aluno_nome " +
+                    "FROM aluno a " +
+                    "JOIN curso c ON a.curso = c.idCurso " +
+                    "WHERE a.ativo = 0 " +
+                    "ORDER BY c.nome, a.nome";
+
+        try (
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+        BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoArquivo))
+        ) {
+        String cursoAtual = "";
+        int contador = 0;
+        List<String> linhasCurso = new ArrayList<>();
+
+        while (rs.next()) {
+            String curso = rs.getString("curso");
+            int idAluno = rs.getInt("idAluno");
+            String nomeAluno = rs.getString("aluno_nome");
+
+            if (!curso.equals(cursoAtual)) {
+                if (!cursoAtual.isEmpty()) {
+                    writer.write("Curso: " + cursoAtual + "\n");
+                    writer.write("Quantidade de alunos ativos: " + contador + "\n");
+                    for (String linha : linhasCurso) {
+                        writer.write(linha + "\n");
+                    }
+                    writer.write("\n");
+                }
+           
+                cursoAtual = curso;
+                contador = 0;
+                linhasCurso.clear();
+            }
+
+            contador++;
+            linhasCurso.add("- ID: " + idAluno + " | Nome: " + nomeAluno);
+        }
+
+        if (!cursoAtual.isEmpty()) {
+            writer.write("Curso: " + cursoAtual + "\n");
+            writer.write("Quantidade de alunos ativos: " + contador + "\n");
+            for (String linha : linhasCurso) {
+                writer.write(linha + "\n");
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso!");
+
+        } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Erro ao gerar relatório: " + e.getMessage());
+        }
+        }
+
       
 }

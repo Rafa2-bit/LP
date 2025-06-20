@@ -322,12 +322,10 @@ public class CadastroAluno extends javax.swing.JFrame {
         if(telefone.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área Telefone deve ser preenchida");return;}
         if(cpf.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área Data de Nascimento deve ser preenchida");return;}
         if(curso.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "O aluno deve ser cadastrado em um curso");return;}
-        try{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dataConvertida = LocalDate.parse(datanasc.getText(), formatter);
         Date data = Date.valueOf(dataConvertida);
         int IDcurso = Integer.parseInt(curso.getText());
-        
         Aluno aluno = new Aluno(nome.getText(),cpf.getText(),telefone.getText(),email.getText(),data,1);
         if(!aluno.validarCPF(cpf.getText())){JOptionPane.showMessageDialog(rootPane,"CPF inválido");return;}
         if(!aluno.validarEmail(email.getText())){JOptionPane.showMessageDialog(rootPane,"Email inválido");return;}
@@ -335,13 +333,13 @@ public class CadastroAluno extends javax.swing.JFrame {
         if (!aluno.validarIdade(data)) {JOptionPane.showMessageDialog(null, "Idade inválida. Aluno deve ter no mínimo 16 anos.");return;}
         CursoDAO dao1 = new CursoDAO();
         AlunoDAO dao = new AlunoDAO();
-        if (dao1.podeCadastrarMaisAlunos(IDcurso)) {
-            dao.insertDB(nome.getText(),cpf.getText(),telefone.getText(),email.getText(), data,1,IDcurso);
-            JOptionPane.showMessageDialog(rootPane, "Aluno cadastrado com sucesso");}
-        else {JOptionPane.showMessageDialog(null, "Limite de alunos atingido para esse curso.");}
-        }catch (SQLException e) {
-            Logger.getLogger("Erro no cadastro:"+e);
-        }
+        try{
+            if (dao1.podeCadastrarMaisAlunos(IDcurso)) {
+                dao.insertDB(nome.getText(),cpf.getText(),telefone.getText(),email.getText(), data,1,IDcurso);
+            }
+            else {JOptionPane.showMessageDialog(null, "Limite de alunos atingido para esse curso.");return;
+            }
+        }catch(SQLException ex){Logger.getLogger("Erro no cadastro:"+ex);}
     }//GEN-LAST:event_cadastrarActionPerformed
 
     private void limparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparActionPerformed
@@ -351,6 +349,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         email.setText("");
         datanasc.setText("");
         curso.setText("");
+        curso.setEditable(true);
     }//GEN-LAST:event_limparActionPerformed
 
     private void listaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listaActionPerformed
@@ -366,7 +365,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         AlunoDAO aluno = new AlunoDAO();
         String n = JOptionPane.showInputDialog("Digite o ID do aluno:");
         int id = Integer.parseInt(n);
-       
+       curso.setEditable(false);
         try {
            List<Aluno> alunos = aluno.Editar(id);
            for (Aluno c : alunos) {
@@ -397,7 +396,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     private void AtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtualizarActionPerformed
     if (nome.getText().length() <= 3){JOptionPane.showMessageDialog(rootPane, "O nome deve ter no mínimo 3 dígitos");return;}
     if (curso.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "O aluno deve ser cadastrado em um curso");return;}
-    
+    curso.setEditable(true);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     LocalDate dataConvertida;
     try {

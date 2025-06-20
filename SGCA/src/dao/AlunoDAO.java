@@ -39,10 +39,10 @@ public class AlunoDAO {
         stm.setInt(7, curso);
     
         stm.executeUpdate();
- 
+        JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso");
       }catch(Exception e){
        e.printStackTrace(); 
-        JOptionPane.showMessageDialog(null, "Erro no cadastro: " + e.getMessage());}
+        JOptionPane.showMessageDialog(null, "Erro no cadastro: "+e.getMessage());}
         
         stm.close();
     }

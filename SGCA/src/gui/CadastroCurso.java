@@ -236,7 +236,8 @@ public class CadastroCurso extends javax.swing.JFrame {
         int cargaHoraria = Integer.parseInt(carga.getText());
         int limiteAlunos = Integer.parseInt(limite.getText());
         id.setEditable(true);
-        if(nome.getText().length() <= 3){JOptionPane.showMessageDialog(rootPane, "O nome deve ter no mínimo 3 dígitos");return;}
+        if(idCurso <= 0){JOptionPane.showMessageDialog(rootPane, "O ID do Curso não pode receber esse valor");return;}
+        if(nome.getText().length() < 3){JOptionPane.showMessageDialog(rootPane, "O nome deve ter no mínimo 3 dígitos");return;}
         if(cargaHoraria < 20){JOptionPane.showMessageDialog(rootPane, "A carga Horaria deve ser no mínimo 20");return;}
         if(limiteAlunos < 1){JOptionPane.showMessageDialog(rootPane, "O curso deve ter no mínimo 1 aluno");return;}
         
@@ -317,10 +318,13 @@ public class CadastroCurso extends javax.swing.JFrame {
        CursoDAO curso = new CursoDAO();
        id.setEditable(true);
        String n = JOptionPane.showInputDialog("Confirme o ID do curso:");
+       if (n == null || n.trim().isEmpty()) {
+            return;
+       }
        int id = Integer.parseInt(n);
        int cargaHoraria = Integer.parseInt(carga.getText());
        int limiteAlunos = Integer.parseInt(limite.getText());
-       if(nome.getText().length() <= 3){JOptionPane.showMessageDialog(rootPane, "O nome deve ter no mínimo 3 dígitos");return;}
+       if(nome.getText().length() < 3){JOptionPane.showMessageDialog(rootPane, "O nome deve ter no mínimo 3 dígitos");return;}
        if(cargaHoraria < 20){JOptionPane.showMessageDialog(rootPane, "A carga Horaria deve ser no mínimo 20");return;}
        if(limiteAlunos < 1){JOptionPane.showMessageDialog(rootPane, "O curso deve ter no mínimo 1 aluno");return;}
         try {

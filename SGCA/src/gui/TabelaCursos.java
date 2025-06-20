@@ -72,7 +72,7 @@ public class TabelaCursos extends JFrame{
             JPanel botoes = new JPanel();
             JButton relatorio = new JButton("Relatório");
             JButton deletar = new JButton("Deletar");
-            JButton buscar = new JButton("Buscar");
+            JButton buscar = new JButton("Buscar Alunos");
             JButton listar = new JButton("Listar Todos");
             botoes.add(listar);
             botoes.add(buscar);
@@ -139,11 +139,11 @@ public class TabelaCursos extends JFrame{
                     if(n == 0){
                     if (userSelection == JFileChooser.APPROVE_OPTION) {
                     File arquivo = fileChooser.getSelectedFile();
-                    dao.gerarRelatorioAlunosAtivos(arquivo.getAbsolutePath());
+                    dao.exportarRelatorioAlunosAtivos(arquivo.getAbsolutePath());
                 }}if(n == 1){
                     if (userSelection == JFileChooser.APPROVE_OPTION) {
                     File arquivo = fileChooser.getSelectedFile();
-                    dao.gerarRelatorioAlunosDesabilitados(arquivo.getAbsolutePath());
+                    dao.exportarRelatorioAlunosInativos(arquivo.getAbsolutePath());
                 }else{return;}
                 }
                 
