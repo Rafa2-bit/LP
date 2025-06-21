@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -89,6 +90,8 @@ public class TabelaCursos extends JFrame{
             listar.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    String[] colunas = {"ID", "CURSO", "CARGA HORARIA", "LIMITE DE ALUNOS","STATUS"};
+                    model.setColumnIdentifiers(colunas);
                     model.setRowCount(0);
                     for (Curso c : curso) {
                         if(c.getAtivo() == 0){continue;}
@@ -156,26 +159,31 @@ public class TabelaCursos extends JFrame{
                     AlunoDAO alunoDAO = new AlunoDAO();
                     String nomeCurso = JOptionPane.showInputDialog("Digite o nome do Curso:");
                     try {
-                        model.setRowCount(0);
                         int idCurso = cursoDAO.pegarIDcurso(nomeCurso);
 
                         List<Aluno> alunos = alunoDAO.listarAlunosCurso(idCurso);
+                        
+                        String[] colunas = {"ID","NOME", "CPF","TELEFONE", "EMAIL" ,"NASCIMENTO","STATUS","CURSO"};
+                        model.setColumnIdentifiers(colunas);
+                        model.setRowCount(0); 
 
                         for (Aluno c : alunos) {
-                            
-                            if(c.getAtivo() == 0){continue;}
+                         if(c.getAtivo() == 0){continue;}
+
+                        String nascimento = c.getDatanasc().toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
                             Object[] linha = {
-                                alunoDAO.pegarID(c.getNome()),
-                                c.getNome(),
-                                c.getCpf(),
-                                c.getTelefone(),
-                                c.getEmail(),
-                                c.getDatanasc(),
-                                "Ativo",
-                                idCurso
-                        };
+                           alunoDAO.pegarID(c.getNome()),
+                            c.getNome(),
+                            c.getCpf(),
+                            c.getTelefone(),
+                            c.getEmail(),
+                            c.getDatanasc(),
+                            c.getAtivo(),
+                            alunoDAO.pegarNomecurso(dao.pegarIDcurso(nomeCurso))
+                            };if(c.getAtivo() >= 1){linha[6] = "Ativo";}else{linha[6] = "Desativado";}
                             model.addRow(linha);
-                        }
+                            }
                     } catch (SQLException ex) {
                         Logger.getLogger(TabelaAlunos.class.getName()).log(Level.SEVERE, null, ex);
                     }

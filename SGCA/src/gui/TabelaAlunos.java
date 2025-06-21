@@ -72,8 +72,10 @@ public class TabelaAlunos extends JFrame {
             JPanel botoes = new JPanel();
             JButton listar = new JButton("Listar Todos");
             JButton deletar = new JButton("Deletar");
+            JButton buscarAluno = new JButton("Buscar Aluno");
             JButton buscar = new JButton("Buscar por Curso");
             botoes.add(listar);
+            botoes.add(buscarAluno);
             botoes.add(buscar);
             botoes.add(deletar);
 
@@ -165,6 +167,36 @@ public class TabelaAlunos extends JFrame {
                     }
                 }
             });
+            buscarAluno.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    AlunoDAO alunoDAO = new AlunoDAO();
+                    String cpf = JOptionPane.showInputDialog("Digite o CPF do aluno:");
+                    
+                    if (cpf == null || cpf.trim().isEmpty()) {
+                        return;
+                    }
+                    try {
+                        model.setRowCount(0);
+
+                        Aluno aluno =  alunoDAO.buscarPorCPF(cpf);
+
+                            Object[] linha = {
+                                alunoDAO.pegarID(aluno.getNome()),
+                                aluno.getNome(),
+                                aluno.getCpf(),
+                                aluno.getTelefone(),
+                                aluno.getEmail(),
+                                aluno.getDatanasc(),
+                                aluno.getAtivo(),
+                                dao.pegarNomecurso(dao.pegarIDcurso(aluno.getNome()))
+                            };
+                            model.addRow(linha);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(TabelaAlunos.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                }});
 
             setVisible(true);
             

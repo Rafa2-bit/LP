@@ -169,7 +169,8 @@ public class CursoDAO {
                 if (rs.next()) {
                     id = rs.getInt("idCurso");
                 }
-            } if (id == 0){JOptionPane.showMessageDialog(null, "Esse curso não existe");}
+            } if (id == 0){
+                JOptionPane.showMessageDialog(null, "Esse curso não existe");return 0;}
             return id;
         }
 

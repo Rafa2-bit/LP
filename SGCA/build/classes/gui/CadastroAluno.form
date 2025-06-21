@@ -23,11 +23,11 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jLabel1" max="32767" attributes="0"/>
+          <Component id="jLabel1" pref="1039" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jPanel1" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -49,7 +49,7 @@
           <Font name="Arial Black" size="20" style="1"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="SISTEMA DE CADASTRO DO ALUNO"/>
+        <Property name="text" type="java.lang.String" value="SISTEMA DE GEST&#xc3;O DE ALUNOS"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JPanel" name="jPanel1">
@@ -71,46 +71,45 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jLabel5" alignment="1" min="-2" pref="56" max="-2" attributes="0"/>
-                          <Component id="jLabel2" alignment="1" min="-2" pref="56" max="-2" attributes="0"/>
-                          <Component id="jLabel6" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabel3" alignment="1" min="-2" pref="56" max="-2" attributes="0"/>
-                          <Component id="jLabel4" alignment="1" min="-2" pref="56" max="-2" attributes="0"/>
-                          <Component id="cadastrar" alignment="1" max="32767" attributes="0"/>
-                      </Group>
-                      <Component id="lista" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="jLabel5" alignment="1" min="-2" pref="56" max="-2" attributes="0"/>
+                      <Component id="jLabel2" alignment="1" min="-2" pref="56" max="-2" attributes="0"/>
+                      <Component id="jLabel6" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jLabel3" alignment="1" min="-2" pref="56" max="-2" attributes="0"/>
+                      <Component id="jLabel4" alignment="1" min="-2" pref="56" max="-2" attributes="0"/>
+                      <Component id="cadastrar" alignment="1" max="32767" attributes="0"/>
                       <Component id="jLabel7" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="lista" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="curso" pref="152" max="32767" attributes="0"/>
-                              <Component id="nome" max="32767" attributes="0"/>
-                              <Component id="cpf" max="32767" attributes="0"/>
-                              <Component id="telefone" max="32767" attributes="0"/>
-                              <Component id="email" max="32767" attributes="0"/>
-                              <Component id="datanasc" pref="152" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace pref="127" max="32767" attributes="0"/>
-                          <Component id="voltar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="Atualizar" pref="80" max="32767" attributes="0"/>
                               <Component id="editar" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="reabilitar" alignment="0" min="-2" pref="88" max="-2" attributes="0"/>
-                              <Component id="desabilitar" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="desabilitar" max="32767" attributes="0"/>
+                              <Component id="reabilitar" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-                          <Component id="limpar" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="393" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="voltar" pref="85" max="32767" attributes="0"/>
+                              <Component id="limpar" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="curso" pref="191" max="32767" attributes="0"/>
+                              <Component id="datanasc" alignment="0" max="32767" attributes="0"/>
+                              <Component id="email" alignment="0" max="32767" attributes="0"/>
+                              <Component id="telefone" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cpf" alignment="0" max="32767" attributes="0"/>
+                              <Component id="nome" alignment="0" max="32767" attributes="0"/>
+                          </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>

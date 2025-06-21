@@ -217,6 +217,32 @@ public class AlunoDAO {
             return nome;
         }
     
+    public Aluno buscarPorCPF(String cpf) throws SQLException {
+    String sql = "SELECT * FROM aluno WHERE cpf = ?";
+    
+    try (
+        Connection conn = new ConnectionDB().getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)
+    ) {
+        stmt.setString(1, cpf);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            return new Aluno(
+                rs.getString("nome"),
+                rs.getString("cpf"),
+                rs.getString("telefone"),
+                rs.getString("email"),
+                rs.getDate("datanasc"),
+                rs.getInt("ativo")
+            );
+        } else {
+            return null; 
+        }
+    }
+    }
+
+    
     public List<Aluno> listarAlunosCurso(int idCurso) throws SQLException {
         List<Aluno> alunos = new ArrayList<>();
         String sql = "SELECT * FROM aluno WHERE curso = ?";
