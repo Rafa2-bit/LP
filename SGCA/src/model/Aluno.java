@@ -4,6 +4,10 @@ package model;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -103,5 +107,19 @@ public class Aluno {
 
     return idade >= 16;
 }
+
+    public boolean validarDataNascimento(String data) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy").withResolverStyle(ResolverStyle.STRICT);
+    try {
+        LocalDate dataNasc = LocalDate.parse(data, formatter);
+        if (dataNasc.isAfter(LocalDate.now())) {
+            return false;
+        }
+
+        return true;
+    } catch (DateTimeParseException e) {
+        return false;      
+    }
+    }
 
 }

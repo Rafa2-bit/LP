@@ -29,16 +29,6 @@ public class CadastroAluno extends javax.swing.JFrame {
         initComponents();
         this.conn = new ConnectionDB().getConnection();
     }
-    
-    public boolean validarData(String data) {
-    try {
-        LocalDate.parse(data);
-        return true;
-    } catch (Exception e) {
-        return false;
-        
-    }
-}
       
 
     /**
@@ -320,6 +310,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         if(cpf.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área CPF deve ser preenchida");return;}
         if(telefone.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área Telefone deve ser preenchida");return;}
         if(cpf.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "A área Data de Nascimento deve ser preenchida");return;}
+        if (datanasc.getText().length() != 10) {JOptionPane.showMessageDialog(null, "Data incompleta! Use o formato dd/MM/yyyy com 4 dígitos no ano.");return;}
         if(curso.getText().equals("")){JOptionPane.showMessageDialog(rootPane, "O aluno deve ser cadastrado em um curso");return;}
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dataConvertida = LocalDate.parse(datanasc.getText(), formatter);
@@ -329,6 +320,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         if(!aluno.validarCPF(cpf.getText())){JOptionPane.showMessageDialog(rootPane,"CPF inválido");return;}
         if(!aluno.validarEmail(email.getText())){JOptionPane.showMessageDialog(rootPane,"Email inválido");return;}
         if(!aluno.validarTelefone(telefone.getText())){JOptionPane.showMessageDialog(rootPane,"Telefone inválido");return;}
+        if (!aluno.validarDataNascimento(datanasc.getText()) == false){JOptionPane.showMessageDialog(null, "Data de nascimento inválida! Use o formato dd/MM/yyyy e certifique-se que a data exista.");return;}
         if (!aluno.validarIdade(data)) {JOptionPane.showMessageDialog(null, "Idade inválida. Aluno deve ter no mínimo 16 anos.");return;}
         CursoDAO dao1 = new CursoDAO();
         AlunoDAO dao = new AlunoDAO();
